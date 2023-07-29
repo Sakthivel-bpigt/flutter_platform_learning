@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_platform_learning/platform_widgets/PlatformShowPopupSheet.dart';
+import 'package:flutter_platform_learning/quote_page.dart';
+import 'package:flutter_platform_learning/trade_page.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class PlatformRoot extends StatefulWidget {
@@ -8,16 +12,13 @@ class PlatformRoot extends StatefulWidget {
   State<PlatformRoot> createState() => _PlatformRootState();
 }
 
-typedef VoidCallback = void Function(BuildContext context);
+//
 
 class _PlatformRootState extends State<PlatformRoot> {
-  Map<String, VoidCallback> functionMap = {};
+  int _selectedValue = 0;
+
   @override
   void initState() {
-    functionMap['Profiteroles'] = func1;
-    functionMap['Cannolis'] = func1;
-    functionMap['Trifle'] = func1;
-
     super.initState();
   }
 
@@ -27,110 +28,74 @@ class _PlatformRootState extends State<PlatformRoot> {
 
   @override
   Widget build(BuildContext context) {
+    PlatformShowPopupSheet popupSheet = PlatformShowPopupSheet(
+        title: "menu",
+        message: "select options here",
+        actionMap: {"a": func1, "b": func1});
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         leading: PlatformIconButton(
-          icon: Icon(context.platformIcons.collections),
-          onPressed: () {},
+          icon: Icon(context.platformIcons.ellipsis),
+          onPressed: () {
+            PlatformShowPopupSheet popupSheet2 = PlatformShowPopupSheet(
+              title: "menu",
+              message: "select page",
+              actionMap: {
+                "Quote": (BuildContext context) => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => const QuotePage()),
+                    ),
+                "Trade": (BuildContext context) => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => const TradePage()),
+                    ),
+                "History": (BuildContext context) => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => const TradePage()),
+                    ),
+              },
+            );
+
+            popupSheet2.showPopupSheet(context);
+          },
         ),
         title: const Text('Platform Scaffold'),
-      ),
-      body: ListView(
-        children: [
-          /// ! BottomSheet
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-            child: PlatformElevatedButton(
-              child: const Text('Bottom Sheet'),
-              onPressed: () => _showPopupSheet(
-                  context, 'Bottom Sheet' as Map<String, Function>),
-            ),
-          ),
+        trailingActions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              print('Selected option: $value');
+            },
+            itemBuilder: (BuildContext context) {
+              //define the items
+              return <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'Option1',
+                  child: Text('Option 1'),
+                )
+              ];
+            },
+          )
         ],
       ),
-    );
-  }
-
-  _showPopupSheet(BuildContext context, Map<String, Function> map) {
-    showPlatformModalSheet(
-      context: context,
-      builder: (_) => PlatformWidget(
-        material: (_, __) => _androidPopupContent(context, map),
-        cupertino: (_, __) => _cupertinoSheetContent(context, map),
-      ),
-    );
-  }
-
-  Widget _androidPopupContent(BuildContext context, Map<String, Function> map) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          GestureDetector(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: PlatformText('Profiteroles'),
-            ),
-            onTap: () => Navigator.pop(context),
-          ),
-          GestureDetector(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: PlatformText('Cannolis'),
-            ),
-            onTap: () => Navigator.pop(context),
-          ),
-          GestureDetector(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: PlatformText('Trifle'),
-            ),
-            onTap: () => Navigator.pop(context),
-          ),
-        ],
-      ),
-    );
-    // return ListView.builder(itemBuilder: (context, i) {
-    //   return PlatformListTile(
-    //     title: Text(map.keys.elementAt(i)),
-    //     onTap: map.values.elementAt(i),
-    //   );
-    // });
-  }
-
-  Widget _cupertinoSheetContent(
-      BuildContext context, Map<String, Function> map) {
-    return CupertinoActionSheet(
-      title: const Text(' Favorite Dessert'),
-      message:
-          const Text('Please select the best dessert from the options below.'),
-      actions: <Widget>[
-        CupertinoActionSheetAction(
-          child: const Text('Profiteroles'),
-          onPressed: () {
-            Navigator.pop(context, 'Profiteroles');
+      body: Container(
+        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+        child: CupertinoPicker(
+          itemExtent: 50,
+          scrollController:
+              FixedExtentScrollController(initialItem: _selectedValue),
+          onSelectedItemChanged: (index) {
+            print('Selected option: $index');
+            setState(() {
+              _selectedValue = index;
+            });
           },
+          children: List.generate(
+              5,
+              (index) => Center(
+                    child: Text('val:${index + 1}'),
+                  )),
         ),
-        CupertinoActionSheetAction(
-          child: const Text('Cannolis'),
-          onPressed: () {
-            Navigator.pop(context, 'Cannolis');
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: const Text('Trifle'),
-          onPressed: () {
-            Navigator.pop(context, 'Trifle');
-          },
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        isDefaultAction: true,
-        onPressed: () {
-          Navigator.pop(context, 'Cancel');
-        },
-        child: const Text('Cancel'),
       ),
     );
   }

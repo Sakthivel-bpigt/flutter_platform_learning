@@ -11,44 +11,46 @@ class TradePage extends StatefulWidget {
 class _TradePageState extends State<TradePage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        PlatformListTile(
-          leading: Icon(context.platformIcons.book),
-          title: PlatformText("title"),
-          subtitle: PlatformText("subtitle"),
-          trailing: Icon(context.platformIcons.rightChevron),
-          onTap: () => print('Quote1'),
-        ),
-        PlatformListTile(
-          leading: Icon(context.platformIcons.book),
-          title: PlatformText("title"),
-          subtitle: PlatformText("subtitle"),
-          trailing: Icon(context.platformIcons.rightChevron),
-          onTap: () => print('Quote1'),
-        ),
-        PlatformListTile(
-          leading: Icon(context.platformIcons.book),
-          title: PlatformText("title"),
-          subtitle: PlatformText("subtitle"),
-          trailing: Icon(context.platformIcons.rightChevron),
-          onTap: () => print('Quote1'),
-        ),
-        PlatformListTile(
-          leading: Icon(context.platformIcons.book),
-          title: PlatformText("title"),
-          subtitle: PlatformText("subtitle"),
-          trailing: Icon(context.platformIcons.rightChevron),
-          onTap: () => print('Quote1'),
-        ),
-        PlatformListTile(
-          leading: Icon(context.platformIcons.book),
-          title: PlatformText("title"),
-          subtitle: PlatformText("subtitle"),
-          trailing: Icon(context.platformIcons.rightChevron),
-          onTap: () => print('Quote1'),
-        ),
-      ],
-    );
+    return PlatformScaffold(
+        appBar: PlatformAppBar(),
+        body: CupertinoListSection(
+          children: [
+            PlatformListTile(
+              leading: Icon(context.platformIcons.book),
+              title: PlatformText("title"),
+              subtitle: PlatformText("subtitle"),
+              trailing: Icon(context.platformIcons.rightChevron),
+              onTap: () => print('Quote1'),
+            ),
+            PlatformListTile(
+              leading: Icon(context.platformIcons.book),
+              title: PlatformText("title"),
+              subtitle: PlatformText("subtitle"),
+              trailing: Icon(context.platformIcons.rightChevron),
+              onTap: () => print('Quote1'),
+            ),
+            PlatformListTile(
+              leading: Icon(context.platformIcons.book),
+              title: PlatformText("title"),
+              subtitle: PlatformText("subtitle"),
+              trailing: Icon(context.platformIcons.rightChevron),
+              onTap: () => print('Quote1'),
+            ),
+            PlatformListTile(
+              leading: Icon(context.platformIcons.book),
+              title: PlatformText("title"),
+              subtitle: PlatformText("subtitle"),
+              trailing: Icon(context.platformIcons.rightChevron),
+              onTap: () => print('Quote1'),
+            ),
+            PlatformListTile(
+              leading: Icon(context.platformIcons.book),
+              title: PlatformText("title"),
+              subtitle: PlatformText("subtitle"),
+              trailing: Icon(context.platformIcons.rightChevron),
+              onTap: () => print('Quote1'),
+            ),
+          ],
+        ));
   }
 }
