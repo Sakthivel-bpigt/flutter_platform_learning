@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class PageTwo extends StatefulWidget {
-  const PageTwo({super.key});
+class TradePage extends StatefulWidget {
+  const TradePage({super.key});
 
   @override
-  State<PageTwo> createState() => _PageTwoState();
+  State<TradePage> createState() => _TradePageState();
 }
 
-class _PageTwoState extends State<PageTwo> {
+class _TradePageState extends State<TradePage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
