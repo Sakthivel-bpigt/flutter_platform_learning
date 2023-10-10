@@ -1,7 +1,31 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_learning/platform_root.dart';
+import 'package:flutter_platform_learning/trade_page.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:go_router/go_router.dart';
+
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PlatformRoot();
+      },
+    ),
+    GoRoute(
+      path: '/quote/:n',
+      builder: (BuildContext context, GoRouterState state) {
+        String n = state.pathParameters["n"] ?? "0";
+        print (n);
+        return const TradePage();
+      },
+    ),
+  ],
+  navigatorKey: GlobalKey<NavigatorState>(),
+  initialLocation: '/',
+);
 
 void main() {
   runApp(MyApp());
@@ -13,62 +37,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode? themeMode = ThemeMode.light; // initial brightness
-
   @override
   Widget build(BuildContext context) {
-    final materialLightTheme = ThemeData.light();
-    final materialDarkTheme = ThemeData.dark();
-
-    const darkDefaultCupertinoTheme =
-        CupertinoThemeData(brightness: Brightness.dark);
-    final cupertinoDarkTheme = MaterialBasedCupertinoThemeData(
-      materialTheme: materialDarkTheme.copyWith(
-        cupertinoOverrideTheme: CupertinoThemeData(
-          brightness: Brightness.dark,
-          barBackgroundColor: darkDefaultCupertinoTheme.barBackgroundColor,
-          textTheme: CupertinoTextThemeData(
-            primaryColor: Colors.white,
-            navActionTextStyle:
-                darkDefaultCupertinoTheme.textTheme.navActionTextStyle.copyWith(
-              color: const Color(0xF0F9F9F9),
-            ),
-            navLargeTitleTextStyle: darkDefaultCupertinoTheme
-                .textTheme.navLargeTitleTextStyle
-                .copyWith(color: const Color(0xF0F9F9F9)),
-          ),
-        ),
-      ),
-    );
-    final cupertinoLightTheme =
-        MaterialBasedCupertinoThemeData(materialTheme: materialLightTheme);
-
     return PlatformProvider(
-      settings: PlatformSettingsData(
-        iosUsesMaterialWidgets: true,
-        iosUseZeroPaddingForAppbarPlatformIcon: true,
+      builder: (context) => PlatformApp.router(
+        // android: (_) => MaterialAppData(theme: ThemeData.light()),
+        // ios: (_) => CupertinoAppData(theme: CupertinoThemeData()),
+        title: 'Flutter Platform Widgets Example',
+        // routerDelegate: router.routerDelegate,
+        // routeInformationParser: router.routeInformationParser,
+        routerConfig: router,
       ),
-      builder: (context) => PlatformTheme(
-        themeMode: themeMode,
-        materialLightTheme: materialLightTheme,
-        materialDarkTheme: materialDarkTheme,
-        cupertinoLightTheme: cupertinoLightTheme,
-        cupertinoDarkTheme: cupertinoDarkTheme,
-        matchCupertinoSystemChromeBrightness: true,
-        onThemeModeChanged: (themeMode) {
-          this.themeMode = themeMode; /* you can save to storage */
-        },
-        builder: (context) => const PlatformApp(
-          localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-            DefaultMaterialLocalizations.delegate,
-            DefaultWidgetsLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          title: 'Flutter Platform Widgets',
-          home: PlatformRoot(),
-        ),
-      ),
-      // ),
     );
   }
 }
